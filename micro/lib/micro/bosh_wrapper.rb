@@ -117,6 +117,11 @@ module VCAP
         start_services_and_wait
       end
 
+      # Reload monitor.
+      def reload_monitor
+        Bosh::Agent::Monit.reload
+      end
+
     end
 
   end
