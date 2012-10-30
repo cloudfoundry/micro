@@ -4,7 +4,9 @@ require 'micro/dnsmasq'
 
 describe VCAP::Micro::Dnsmasq do
 
-  subject { VCAP::Micro::Dnsmasq.new('foobar.com', '192.168.0.2') }
+  subject {
+    VCAP::Micro::Dnsmasq.new(:domain => 'foobar.com', :ip => '192.168.0.2')
+  }
 
   its(:gen_conf) { should == 'address=/foobar.com/192.168.0.2' }
 
@@ -33,7 +35,7 @@ make_resolv_conf() {
 eos
     }
 
-  describe '.write' do
+  describe '#write' do
 
     before(:all) {
       @temp_conf = Tempfile.new('dnsmasq')
@@ -48,7 +50,8 @@ eos
     }
 
     subject {
-      d = VCAP::Micro::Dnsmasq.new('foobar.com', '192.168.0.2')
+      d = VCAP::Micro::Dnsmasq.new(
+        :domain => 'foobar.com', :ip => '192.168.0.2')
 
       d.class.stub(:restart)
 
@@ -103,6 +106,34 @@ make_resolv_conf() {
   echo 'nameserver 127.0.0.1' > /etc/resolv.conf
 }
 eos
+    end
+
+  end
+
+  describe '#upstream_servers' do
+
+    it 'recognizes servers' do
+      Tempfile.open('dnsmasq') do |t|
+        t.write("server=1.2.3.4\n")
+        t.write("server=5.6.7.8\n")
+        t.flush
+
+        dnsmasq = VCAP::Micro::Dnsmasq.new
+        dnsmasq.upstream_servers_path = t.path
+        dnsmasq.upstream_servers.should == %w{1.2.3.4 5.6.7.8}
+      end
+    end
+
+    it 'ignores comments' do
+      Tempfile.open('dnsmasq') do |t|
+        t.write("# this is commented out\n")
+        t.write("#server=1.2.3.4\n")
+        t.flush
+
+        dnsmasq = VCAP::Micro::Dnsmasq.new
+        dnsmasq.upstream_servers_path = t.path
+        dnsmasq.upstream_servers.should be_empty
+      end
     end
 
   end

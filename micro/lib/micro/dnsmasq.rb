@@ -1,3 +1,5 @@
+require 'micro/network_interface'
+
 module VCAP
 
   module Micro
@@ -10,9 +12,9 @@ module VCAP
         `service dnsmasq restart`
       end
 
-      def initialize(domain, ip)
-        @domain = domain
-        @ip = ip
+      def initialize(options={})
+        @domain = options[:domain]
+        @ip = options[:ip]
 
         @upstream_servers_path = '/etc/dnsmasq.d/server'
 
@@ -82,6 +84,17 @@ eos
       def restore_upstream_servers
         Commenter.new(upstream_servers_path).uncomment
         self.class.restart
+      end
+
+      def upstream_servers
+        result = []
+
+        open(upstream_servers_path).each do |line|
+          server = line[/^server=(#{NetworkInterface::IP_RE})$/, 1]
+          result << server  if server
+        end
+
+        result
       end
 
       attr_accessor :domain

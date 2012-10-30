@@ -26,10 +26,12 @@ module VCAP
       # If a block is passed in, the apply spec will be yielded so that
       # changes can be made before writing.
       def write
+        yield self  if block_given?
+        output = YAML.dump(@spec)
+
         open(@path, 'w') do |f|
           f.flock(File::LOCK_EX)
-          yield self  if block_given?
-          f.write(YAML.dump(@spec))
+          f.write(output)
           f.flock(File::LOCK_UN)
         end
       end
@@ -87,6 +89,7 @@ module VCAP
       end
 
       attr_accessor :path
+      attr_accessor :spec
     end
 
   end

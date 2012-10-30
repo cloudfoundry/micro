@@ -38,8 +38,6 @@ module VCAP
         @ip = nil
         @netmask = nil
         @gateway = nil
-
-        load
       end
 
       # Run commands, parse the output and load it into this instance.
@@ -54,6 +52,8 @@ module VCAP
         if routes_parsed
           @gateway = routes_parsed[:default_route]
         end
+
+        self
       end
 
       attr_reader :name
