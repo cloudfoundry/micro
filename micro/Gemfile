@@ -22,8 +22,6 @@ gem 'rest-client'
 gem "statemachine"
 gem "progressbar"
 
-gem 'vmc'
-
 group :test do
   gem "rcov_analyzer", :platforms => :ruby_18
   gem "rspec", :require => ["spec", "spec/interop/test"]
