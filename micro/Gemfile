@@ -22,7 +22,9 @@ gem 'rest-client'
 gem "statemachine"
 gem "progressbar"
 
-gem 'vmc'
+gem 'sinatra'
+gem 'ruby-graphviz'
+gem 'shotgun'
 
 group :test do
   gem "rcov_analyzer", :platforms => :ruby_18
