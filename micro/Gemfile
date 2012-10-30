@@ -24,6 +24,10 @@ gem "progressbar"
 
 gem 'vmc'
 
+gem 'sinatra'
+gem 'ruby-graphviz'
+gem 'shotgun'
+
 group :test do
   gem "rcov_analyzer", :platforms => :ruby_18
   gem "rspec", :require => ["spec", "spec/interop/test"]
