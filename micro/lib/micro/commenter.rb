@@ -10,7 +10,7 @@ module VCAP
 
       def initialize(file_path)
         @file_path = file_path
-        @comment_str = '# '
+        @comment_str = '#### '
       end
 
       # Comment out uncommented lines of the file.
