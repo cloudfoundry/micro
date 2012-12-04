@@ -44,7 +44,7 @@ module VCAP
                     s.http_proxy = micro_cloud.http_proxy
                   end
 
-                  settings.bosh.restart_services
+                  BoshWrapper.new.restart_services
                 end
 
                 if micro_cloud.internet_connected == false
@@ -54,7 +54,7 @@ module VCAP
                 end
 
                 if micro_cloud.is_powered_on == false
-                  settings.bosh.stop_services_and_wait
+                  BoshWrapper.new.stop_services_and_wait
                   Micro.shell_raiser('poweroff')
                 end
               end

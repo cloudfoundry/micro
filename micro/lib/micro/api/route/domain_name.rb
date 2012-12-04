@@ -78,7 +78,7 @@ module VCAP
                   as.domain = config_file.subdomain
                 end
 
-                settings.bosh.apply_spec(spec.spec)
+                BoshWrapper.new.apply_spec(spec.spec)
               elsif domain_name.synched
                 config_file = ConfigFile.new
 
