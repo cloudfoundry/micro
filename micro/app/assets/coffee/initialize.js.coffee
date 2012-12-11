@@ -1,6 +1,12 @@
 window.initialize_micro_cloudfoundry = (mcf) ->
   mcf ||= new Mcf '/api'
 
+  mcf.configured ->
+      $('#configured').show()
+      mcf.load_data()
+    , ->
+      $('#not-configured').show()
+
   submit = (progress_bar, method, data) ->
     bar = new ProgressBar $(progress_bar)
     bar.start_indeterminate()
@@ -52,5 +58,3 @@ window.initialize_micro_cloudfoundry = (mcf) ->
       gateway: $('#gateway').val()
       nameservers: $('#nameservers').val().split(',')
       is_dhcp: $('#dhcp').is(':checked')
-
-  mcf.load_data()

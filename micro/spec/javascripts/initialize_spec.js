@@ -1,7 +1,54 @@
 describe("initialize", function () {
-  describe(".admin_submit", function () {
-    var mcf;
+  var mcf;
 
+  describe("#on_startup", function() {
+    beforeEach(function() {
+      $('#jasmine_content').html('<div id="configured">Configured Div</div><div id="not-configured">Not Configured Div</div>')
+      jasmine.Ajax.useMock();
+      mcf = new Mcf('/api');
+      spyOn(mcf, 'load_data');
+      initialize_micro_cloudfoundry(mcf);
+    });
+
+    it("should make an ajax request to check the configuration state", function() {
+      var request = mostRecentAjaxRequest();
+      expect(request.url).toEqual('/api');
+      expect(request.method).toEqual('GET');
+    });
+
+    context("when configured", function() {
+      it("displays the configured section", function() {
+        expect($('#configured')).not.toBeVisible();
+        expect($('#not-configured')).not.toBeVisible();
+        mostRecentAjaxRequest().response({status: 200, responseText: JSON.stringify({is_configured: true})});
+        expect($('#configured')).toBeVisible();
+        expect($('#not-configured')).not.toBeVisible();
+      });
+
+      it('should call load data', function() {
+        mostRecentAjaxRequest().response({status: 200, responseText: JSON.stringify({is_configured: true})});
+        expect(mcf.load_data).toHaveBeenCalled();
+      });
+    });
+
+
+    context("when not configured", function() {
+      it("displays the not configured section", function() {
+        expect($('#configured')).not.toBeVisible();
+        expect($('#not-configured')).not.toBeVisible();
+        mostRecentAjaxRequest().response({status: 200, responseText: JSON.stringify({is_configured: false})});
+        expect($('#configured')).not.toBeVisible();
+        expect($('#not-configured')).toBeVisible();
+      });
+
+      it('should not call load data', function() {
+        mostRecentAjaxRequest().response({status: 200, responseText: JSON.stringify({is_configured: false})});
+        expect(mcf.load_data).not.toHaveBeenCalled();
+      });
+    });
+  });
+
+  describe(".admin_submit", function () {
     beforeEach(function () {
       $('#jasmine_content').html(
         '<button id="admin-submit" type="button" class="btn">Submit</button>' +
@@ -93,8 +140,6 @@ describe("initialize", function () {
   });
 
   describe(".domain_submit", function () {
-    var mcf;
-
     beforeEach(function () {
       $('#jasmine_content').html(
         '<button id="domain-submit" type="button" class="btn">Submit</button>' +
@@ -185,8 +230,6 @@ describe("initialize", function () {
   });
 
   describe(".internet_on_submit", function () {
-    var mcf;
-
     beforeEach(function () {
       $('#jasmine_content').html(
         '<button id="internet-on-submit" type="button" class="btn">Submit</button>' +
@@ -274,8 +317,6 @@ describe("initialize", function () {
   });
 
   describe(".internet_off_submit", function () {
-    var mcf;
-
     beforeEach(function () {
       $('#jasmine_content').html(
         '<button id="internet-off-submit" type="button" class="btn">Submit</button>' +
@@ -363,8 +404,6 @@ describe("initialize", function () {
   });
 
   describe(".network_submit", function () {
-    var mcf;
-
     beforeEach(function () {
       $('#jasmine_content').html(
         '<button id="network-submit" type="button" class="btn">Submit</button>' +
@@ -464,8 +503,6 @@ describe("initialize", function () {
   });
 
   describe(".proxy_submit", function () {
-    var mcf;
-
     beforeEach(function () {
       $('#jasmine_content').html(
         '<button id="proxy-submit" type="button" class="btn">Submit</button>' +
