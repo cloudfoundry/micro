@@ -3,6 +3,11 @@
   display: none;
 }
 
+#tos strong {
+  text-transform: uppercase;
+  font-weight: normal;
+}
+
 .enabled {
   display : none;
 }
