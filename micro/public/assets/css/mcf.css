@@ -68,5 +68,9 @@ body {
 }
 
 #global-error {
-    display: none;
+  display: none;
+}
+
+.help-block {
+  font-size: .75em;
 }
