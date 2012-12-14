@@ -392,8 +392,16 @@ task :dist_release do
   p "http://download3.vmware.com/cloudfoundry/micro/release/#{zip_name}"
 end
 
+desc 'Stop the curently running test micro cloud and delete it.'
+task :kill_running do
+  run_locally "#{vmrun} stop #{vmx} nogui || true"
+  run_locally 'rm -rf /tmp/micro'
+end
+
 desc 'Build and test the latest Micro Cloud Foundry.'
 task :build, :roles => :build do
+  kill_running
+  bvt_teardown
   clean
 
   set :tag, latest_cf_release_tag
@@ -478,14 +486,8 @@ eos
   bvt_setup
   bvt
   vcap_java_client_tests
-  bvt_teardown
 
   dist
 
   # Archive build?
-
-  # Cleanup.
-
-  run_locally "#{vmrun} stop #{vmx} nogui"
-  run_locally 'rm -rf /tmp/micro'
 end
