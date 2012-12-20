@@ -144,7 +144,7 @@ describe("initialize", function () {
         spyOn(mcf, 'initial_config').andCallFake(function (data, callback) {
           callback();
         });
-        spyOn(mcf, 'configured');
+        spyOn(mcf, 'configured').andCallThrough();
         spyOn(mcf, 'load_data');
       });
 
@@ -264,11 +264,12 @@ describe("initialize", function () {
 
     describe("when the updating is successful", function () {
       beforeEach(function () {
+        clearAjaxRequests();
         spyOn(mcf, 'update_admin').andCallFake(function (data, callback) {
           callback();
         });
 
-        spyOn(mcf, 'configured');
+        spyOn(mcf, 'configured').andCallThrough();
         spyOn(mcf, 'load_data');
       });
 
@@ -283,8 +284,8 @@ describe("initialize", function () {
       });
 
       it("loads the data", function () {
-        mostRecentAjaxRequest().response({status:200, responseText:JSON.stringify({is_configured:true})});
         $('#admin-submit').click();
+        mostRecentAjaxRequest().response({status:200, responseText:JSON.stringify({is_configured:true})});
         expect(mcf.configured).toHaveBeenCalled();
         expect(mcf.load_data).toHaveBeenCalled();
       });
@@ -358,11 +359,12 @@ describe("initialize", function () {
 
     describe("when the updating is successful", function () {
       beforeEach(function () {
+        clearAjaxRequests();
         spyOn(mcf, 'update_domain').andCallFake(function (data, callback) {
           callback();
         });
 
-        spyOn(mcf, 'configured');
+        spyOn(mcf, 'configured').andCallThrough();
         spyOn(mcf, 'load_data');
       });
 
@@ -377,8 +379,8 @@ describe("initialize", function () {
       });
 
       it("loads the data", function () {
-        mostRecentAjaxRequest().response({status:200, responseText:JSON.stringify({is_configured:true})});
         $('#domain-submit').click();
+        mostRecentAjaxRequest().response({status:200, responseText:JSON.stringify({is_configured:true})});
         expect(mcf.configured).toHaveBeenCalled();
         expect(mcf.load_data).toHaveBeenCalled();
       });
@@ -455,8 +457,9 @@ describe("initialize", function () {
           callback();
         });
 
-        spyOn(mcf, 'configured');
+        spyOn(mcf, 'configured').andCallThrough();
         spyOn(mcf, 'load_data');
+        clearAjaxRequests();
       });
 
       it("hides the bar", function () {
@@ -470,8 +473,8 @@ describe("initialize", function () {
       });
 
       it("loads the data", function () {
-        mostRecentAjaxRequest().response({status:200, responseText:JSON.stringify({is_configured:true})});
         $('#internet-on-submit').click();
+        mostRecentAjaxRequest().response({status:200, responseText:JSON.stringify({is_configured:true})});
         expect(mcf.update_micro_cloud).toHaveBeenCalledWith({internet_connected:true}, jasmine.any(Function), jasmine.any(Function));
 
         expect(mcf.configured).toHaveBeenCalled();
@@ -548,8 +551,9 @@ describe("initialize", function () {
         spyOn(mcf, 'update_micro_cloud').andCallFake(function (data, callback) {
           callback();
         });
-        spyOn(mcf, 'configured');
+        spyOn(mcf, 'configured').andCallThrough();
         spyOn(mcf, 'load_data');
+        clearAjaxRequests();
       });
 
       it("hides the bar", function () {
@@ -563,8 +567,8 @@ describe("initialize", function () {
       });
 
       it("loads the data", function () {
-        mostRecentAjaxRequest().response({status:200, responseText:JSON.stringify({is_configured:true})});
         $('#internet-off-submit').click();
+        mostRecentAjaxRequest().response({status:200, responseText:JSON.stringify({is_configured:true})});
         expect(mcf.configured).toHaveBeenCalled();
         expect(mcf.load_data).toHaveBeenCalled();
       });
@@ -651,8 +655,9 @@ describe("initialize", function () {
         spyOn(mcf, 'update_network').andCallFake(function (data, callback) {
           callback();
         });
-        spyOn(mcf, 'configured');
+        spyOn(mcf, 'configured').andCallThrough();
         spyOn(mcf, 'load_data');
+        clearAjaxRequests();
       });
 
       it("hides the bar", function () {
@@ -666,8 +671,8 @@ describe("initialize", function () {
       });
 
       it("loads the data", function () {
-        mostRecentAjaxRequest().response({status:200, responseText:JSON.stringify({is_configured:true})});
         $('#network-submit').click();
+        mostRecentAjaxRequest().response({status:200, responseText:JSON.stringify({is_configured:true})});
         expect(mcf.configured).toHaveBeenCalled();
         expect(mcf.load_data).toHaveBeenCalled();
       });
@@ -743,8 +748,9 @@ describe("initialize", function () {
         spyOn(mcf, 'update_micro_cloud').andCallFake(function (data, callback) {
           callback();
         });
-        spyOn(mcf, 'configured');
+        spyOn(mcf, 'configured').andCallThrough();
         spyOn(mcf, 'load_data');
+        clearAjaxRequests();
       });
 
       it("hides the bar", function () {
@@ -758,8 +764,8 @@ describe("initialize", function () {
       });
 
       it("loads the data", function () {
-        mostRecentAjaxRequest().response({status:200, responseText:JSON.stringify({is_configured:true})});
         $('#proxy-submit').click();
+        mostRecentAjaxRequest().response({status:200, responseText:JSON.stringify({is_configured:true})});
         expect(mcf.configured).toHaveBeenCalled();
         expect(mcf.load_data).toHaveBeenCalled();
       });
@@ -795,5 +801,3 @@ describe("initialize", function () {
     });
   });
 });
-
-

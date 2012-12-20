@@ -48,7 +48,7 @@ window.Mcf = class Mcf
     @set_proxy micro_cloud.http_proxy
     @set_version micro_cloud.version
 
-  configured: (configured_callback, not_configured_callback) =>
+  configured: (configured_callback=$.noop, not_configured_callback=$.noop) =>
     @from_root (data) =>
       if data.is_configured
         configured_callback()
