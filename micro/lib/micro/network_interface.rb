@@ -56,9 +56,19 @@ module VCAP
         self
       end
 
+      # Bring this network interface down.
+      def down
+        Micro.shell_raiser(%Q{ifdown #{name}})
+      end
+
+      def up
+        Micro.shell_raiser(%Q{ifup #{name}})
+      end
+
       # Restart this network interface.
       def restart
-        Micro.shell_raiser(%Q{/etc/init.d/networking restart})
+        down
+        up
       end
 
       attr_reader :name

@@ -48,9 +48,10 @@ module VCAP
                 halt 400, 'Invalid network configuration'
               end
 
+              interface = Micro::NetworkInterface.new(network_interface.name)
+              interface.down
               network_interface_file.write
-
-              Micro::NetworkInterface.new(network_interface.name).restart
+              interface.up
 
               if network_interface_file.static?
                 dnsmasq = Dnsmasq.new.read
